@@ -7,7 +7,7 @@ if uname == 'Darwin':
     os_ldflags=' -mmacosx-version-min=10.5.0'
 
 
-def appendEnvVar(env,var,sep=":",before=True):
+def append_env_var(env,var,sep=":",before=True):
     """ append text to a environnement variable
     @param env String variable to set
     @param before append before or after the variable"""
