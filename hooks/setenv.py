@@ -28,6 +28,5 @@ def getsaslenvb(options=None,buildout=None):
             os.path.join(options['compile-directory'],'configure')
         )
     )
-    import pdb;pdb.set_trace()  ## Breakpoint ##
 
 # vim:set ts=4 sts=4 et  :
