@@ -1,4 +1,5 @@
 import os
+import sys
 def getsaslenv(options=None,buildout=None):
     # patch Makefile
     os.chdir(options['compile-directory'])
@@ -18,6 +19,19 @@ def getsaslenv(options=None,buildout=None):
         os.chdir(oldpwd)
 
 def getsaslenvb(options=None,buildout=None):
+    if sys.platform.startswith('cygwin'):
+        c = os.getcwd()
+        os.chdir(options['compile-directory'])
+        os.system("automake -fcav")
+        os.chdir('saslauthd')
+        os.system('../config/missing  '
+                  '--run aclocal-1.7  '
+                  '-I ../cmulocal/    '
+                  '-I ../config/      ')
+        os.system("automake -fcav")
+        os.chdir(options['compile-directory'])
+        os.environ['LDFLAGS'] = '%s %s' %( os.environ.get('LDFLAGS', '') , '-no-undefined')
+        os.chdir(c)
     os.system(
         'sed -e "s/\$ac_cache_corrupted/ [[ "a" == "b" ]] /g" -i %s' % (
             os.path.join(options['compile-directory'],'saslauthd','configure')

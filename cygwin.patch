@@ -1,0 +1,326 @@
+diff -uNr cyrus-sasl-2.1.24/Makefile.am cyrus-sasl-2.1.24.new/Makefile.am
+--- cyrus-sasl-2.1.24/Makefile.am	2006-05-19 16:45:21.000000000 +0200
++++ cyrus-sasl-2.1.24.new/Makefile.am	2009-11-29 20:19:40.968750000 +0100
+@@ -69,7 +69,7 @@
+ INSTALLOSX = 
+ endif
+ 
+-SUBDIRS=include sasldb plugins lib utils doc man $(PWC) $(SAM) $(JAV) $(SAD)
++SUBDIRS=include sasldb lib plugins utils doc man $(PWC) $(SAM) $(JAV) $(SAD)
+ EXTRA_DIST=config cmulocal win32 mac dlcompat-20010505 NTMakefile INSTALL.TXT
+ 
+ dist-hook:
+diff -uNr cyrus-sasl-2.1.24/config/sasldb.m4 cyrus-sasl-2.1.24.new/config/sasldb.m4
+--- cyrus-sasl-2.1.24/config/sasldb.m4	2009-08-13 14:36:40.000000000 +0200
++++ cyrus-sasl-2.1.24.new/config/sasldb.m4	2009-11-29 18:41:08.437500000 +0100
+@@ -95,10 +95,12 @@
+ AC_MSG_CHECKING(DB library to use)
+ AC_MSG_RESULT($dblib)
+ 
++AC_EXEEXT
++
+ SASL_DB_BACKEND="db_${dblib}.lo"
+ SASL_DB_BACKEND_STATIC="db_${dblib}.o allockey.o"
+ SASL_DB_BACKEND_STATIC_SRCS="\$(top_srcdir)/sasldb/db_${dblib}.c \$(top_srcdir)/sasldb/allockey.c"
+-SASL_DB_UTILS="saslpasswd2 sasldblistusers2"
++SASL_DB_UTILS="saslpasswd2$EXEEXT sasldblistusers2$EXEEXT"
+ SASL_DB_MANS="saslpasswd2.8 sasldblistusers2.8"
+ 
+ case "$dblib" in
+diff -uNr cyrus-sasl-2.1.24/config.h.in cyrus-sasl-2.1.24.new/config.h.in
+--- cyrus-sasl-2.1.24/config.h.in	2009-08-13 19:51:36.000000000 +0200
++++ cyrus-sasl-2.1.24.new/config.h.in	2009-11-29 18:42:14.937500000 +0100
+@@ -440,9 +440,12 @@
+ /* Define to empty if `const' does not conform to ANSI C. */
+ #undef const
+ 
+-/* Define as `__inline' if that's what the C compiler calls it, or to nothing
+-   if it is not supported. */
+-#undef inline
++/* Define to `__inline__' or `__inline' if that's what the C compiler
++   calls it, or to nothing if 'inline' is not supported under any name.  */
++#ifndef __cplusplus
++ #undef inline
++#endif
++
+ 
+ /* Define to `int' if <sys/types.h> does not define. */
+ #undef mode_t
+diff -uNr cyrus-sasl-2.1.24/configure cyrus-sasl-2.1.24.new/configure
+--- cyrus-sasl-2.1.24/configure	2009-08-13 19:50:03.000000000 +0200
++++ cyrus-sasl-2.1.24.new/configure	2009-11-29 19:57:57.125000000 +0100
+@@ -8038,6 +8038,7 @@
+   (eval $ac_try) 2>&5
+   ac_status=$?
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
++  ac_status=1
+   (exit $ac_status); }; }; then
+   ac_header_compiler=yes
+ else
+@@ -8046,6 +8047,8 @@
+ 
+ ac_header_compiler=no
+ fi
++ac_header_compiler=yes
++ac_header_preproc=yes
+ rm -f conftest.$ac_objext conftest.$ac_ext
+ echo "$as_me:$LINENO: result: $ac_header_compiler" >&5
+ echo "${ECHO_T}$ac_header_compiler" >&6
+@@ -8071,12 +8074,12 @@
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } >/dev/null; then
+   if test -s conftest.err; then
+-    ac_cpp_err=$ac_c_preproc_warn_flag
++    ac_cpp_err=
+   else
+     ac_cpp_err=
+   fi
+ else
+-  ac_cpp_err=yes
++  ac_cpp_err=
+ fi
+ if test -z "$ac_cpp_err"; then
+   ac_header_preproc=yes
+@@ -8089,7 +8092,8 @@
+ rm -f conftest.err conftest.$ac_ext
+ echo "$as_me:$LINENO: result: $ac_header_preproc" >&5
+ echo "${ECHO_T}$ac_header_preproc" >&6
+-
++ac_header_compiler=yes
++ac_header_preproc=yes
+ # So?  What about this header?
+ case $ac_header_compiler:$ac_header_preproc in
+   yes:no )
+diff -uNr cyrus-sasl-2.1.24/lib/Makefile.am cyrus-sasl-2.1.24.new/lib/Makefile.am
+--- cyrus-sasl-2.1.24/lib/Makefile.am	2009-08-13 15:37:28.000000000 +0200
++++ cyrus-sasl-2.1.24.new/lib/Makefile.am	2009-11-29 18:53:40.093750000 +0100
+@@ -65,7 +65,7 @@
+ libsasl2_la_LDFLAGS = -version-info $(sasl_version)
+ libsasl2_la_DEPENDENCIES = $(LTLIBOBJS)
+ libsasl2_la_LIBADD = $(LTLIBOBJS) $(SASL_DL_LIB) $(LIB_SOCKET) $(LIB_DOOR)
+-
++libsasl2_la_LDFLAGS = -no-undefined -version-info $(sasl_version)
+ if MACOSX
+ framedir = /Library/Frameworks/SASL2.framework
+ install-exec-hook:
+diff -uNr cyrus-sasl-2.1.24/lib/Makefile.in cyrus-sasl-2.1.24.new/lib/Makefile.in
+--- cyrus-sasl-2.1.24/lib/Makefile.in	2009-08-13 19:50:18.000000000 +0200
++++ cyrus-sasl-2.1.24.new/lib/Makefile.in	2009-11-29 22:50:35.687500000 +0100
+@@ -637,7 +637,7 @@
+ libsasl2.a: libsasl2.la $(SASL_STATIC_OBJS)
+ 	@echo adding static plugins and dependencies
+ 	$(AR) cru .libs/$@ $(SASL_STATIC_OBJS)
+-	@for i in ./libsasl2.la ../sasldb/libsasldb.la ../plugins/lib*.la; do \
++	@for i in ./libsasl2.la -L../sasldb/.libs -lsasldb ../plugins/lib*.la; do \
+ 	if test ! -f $$i; then continue; fi; . $$i; \
+ 	for j in $$dependency_libs foo; do \
+ 	case $$j in foo) ;; \
+diff -uNr cyrus-sasl-2.1.24/plugins/Makefile.am cyrus-sasl-2.1.24.new/plugins/Makefile.am
+--- cyrus-sasl-2.1.24/plugins/Makefile.am	2009-08-13 15:37:30.000000000 +0200
++++ cyrus-sasl-2.1.24.new/plugins/Makefile.am	2009-11-29 22:50:35.687500000 +0100
+@@ -51,10 +51,10 @@
+ INCLUDES=-I$(top_srcdir)/include -I$(top_srcdir)/lib -I$(top_srcdir)/sasldb -I$(top_builddir)/include
+ AM_LDFLAGS = -module -export-dynamic -rpath $(plugindir) -version-info $(plugin_version)
+ 
+-COMPAT_OBJS = @LTGETADDRINFOOBJS@ @LTGETNAMEINFOOBJS@ @LTSNPRINTFOBJS@
++COMPAT_OBJS_INPLACE = @LTGETADDRINFOOBJS@ @LTGETNAMEINFOOBJS@ @LTSNPRINTFOBJS@
++COMPAT_OBJS = $(COMPAT_OBJS_INPLACE:%=../lib/%)
+ 
+ EXTRA_DIST = makeinit.sh NTMakefile
+-noinst_SCRIPTS = makeinit.sh
+ 
+ LIB_MYSQL = @LIB_MYSQL@
+ 
+@@ -70,59 +70,72 @@
+ 
+ libplain_la_SOURCES = plain.c plain_init.c $(common_sources)
+ libplain_la_DEPENDENCIES = $(COMPAT_OBJS)
++libplain_la_LDFLAGS = -no-undefined -version-info $(plugin_version)
+ libplain_la_LIBADD = $(PLAIN_LIBS) $(COMPAT_OBJS)
+ 
+ libanonymous_la_SOURCES = anonymous.c anonymous_init.c $(common_sources)
+ libanonymous_la_DEPENDENCIES = $(COMPAT_OBJS)
+ libanonymous_la_LIBADD = $(COMPAT_OBJS)
++libanonymous_LDFLAGS = -no-undefined  -version-info $(plugin_version)
+ 
+ libkerberos4_la_SOURCES = kerberos4.c kerberos4_init.c $(common_sources)
+ libkerberos4_la_DEPENDENCIES = $(COMPAT_OBJS)
+ libkerberos4_la_LIBADD = $(SASL_KRB_LIB) $(LIB_SOCKET) $(COMPAT_OBJS)
++libkerberos4_LDFLAGS = -no-undefined -version-info $(plugin_version)
+ 
+ libgssapiv2_la_SOURCES = gssapi.c gssapiv2_init.c $(common_sources)
+ libgssapiv2_la_DEPENDENCIES = $(COMPAT_OBJS)
+ libgssapiv2_la_LIBADD = $(GSSAPIBASE_LIBS) $(GSSAPI_LIBS) $(LIB_SOCKET) $(COMPAT_OBJS)
++libgssapiv2_LDFLAGS = -no-undefined -version-info $(plugin_version)
+ 
+ libcrammd5_la_SOURCES = cram.c crammd5_init.c $(common_sources)
+ libcrammd5_la_DEPENDENCIES = $(COMPAT_OBJS)
+ libcrammd5_la_LIBADD = $(COMPAT_OBJS)
++libcrammd5_LDFLAGS = -no-undefined -version-info $(plugin_version)
+ 
+ libdigestmd5_la_SOURCES = digestmd5.c digestmd5_init.c $(common_sources)
+ libdigestmd5_la_DEPENDENCIES = $(COMPAT_OBJS)
+ libdigestmd5_la_LIBADD = $(LIB_DES) $(LIB_SOCKET) $(COMPAT_OBJS)
++libdigestmd5_LDFLAGS = -no-undefined -version-info $(plugin_version)
+ 
+ liblogin_la_SOURCES = login.c login_init.c $(common_sources)
+ liblogin_la_DEPENDENCIES = $(COMPAT_OBJS)
+ liblogin_la_LIBADD = $(PLAIN_LIBS) $(COMPAT_OBJS)
++liblogin_LDFLAGS = -no-undefined -version-info $(plugin_version)
+ 
+ libsrp_la_SOURCES = srp.c srp_init.c $(common_sources)
+ libsrp_la_DEPENDENCIES = $(COMPAT_OBJS)
+ libsrp_la_LIBADD = $(SRP_LIBS) $(COMPAT_OBJS)
++libsrp_la_LDFLAGS = -no-undefined -version-info $(plugin_version)
+ 
+ libotp_la_SOURCES = otp.c otp_init.c otp.h $(common_sources)
+ libotp_la_DEPENDENCIES = $(COMPAT_OBJS)
+ libotp_la_LIBADD = $(OTP_LIBS) $(COMPAT_OBJS)
++libotp_la_LDFLAGS = -no-undefined -version-info $(plugin_version)
+ 
+ libntlm_la_SOURCES = ntlm.c ntlm_init.c $(common_sources)
+ libntlm_la_DEPENDENCIES = $(COMPAT_OBJS)
+ libntlm_la_LIBADD = $(NTLM_LIBS) $(COMPAT_OBJS)
++libntlm_la_LDFLAGS = -no-undefined -version-info $(plugin_version)
+ 
+ libpassdss_la_SOURCES = passdss.c passdss_init.c $(common_sources)
+ libpassdss_la_DEPENDENCIES = $(COMPAT_OBJS)
+ libpassdss_la_LIBADD = $(PASSDSS_LIBS) $(COMPAT_OBJS)
++libpassdss_la_LDFLAGS = -no-undefined -version-info $(plugin_version)
+ 
+ # Auxprop Plugins
+ libsasldb_la_SOURCES = sasldb.c sasldb_init.c $(common_sources)
+ libsasldb_la_DEPENDENCIES = $(COMPAT_OBJS)
+-libsasldb_la_LIBADD = ../sasldb/libsasldb.la $(SASL_DB_LIB) $(COMPAT_OBJS)
++libsasldb_la_LIBADD = -L../sasldb/.libs -lsasldb $(SASL_DB_LIB) $(COMPAT_OBJS)
++libsasldb_la_LDFLAGS = -no-undefined -version-info $(plugin_version)
+ 
+ libldapdb_la_SOURCES = ldapdb.c ldapdb_init.c $(common_sources)
++libldapdb_la_LDFLAGS = -no-undefined -version-info $(plugin_version)
+ libldapdb_la_DEPENDENCIES = $(COMPAT_OBJS)
+ libldapdb_la_LIBADD = $(COMPAT_OBJS)
+ 
+ libsql_la_SOURCES = sql.c sql_init.c $(common_sources)
+-libsql_la_LDFLAGS = $(LIB_MYSQL) $(LIB_PGSQL) $(LIB_SQLITE) $(AM_LDFLAGS)
++libsql_la_LDFLAGS = $(LIB_MYSQL) $(LIB_PGSQL) $(LIB_SQLITE) $(AM_LDFLAGS) -no-undefined -version-info $(plugin_version)
+ libsql_la_DEPENDENCIES = $(COMPAT_OBJS)
+ libsql_la_LIBADD = $(COMPAT_OBJS)
+ 
+diff -uNr cyrus-sasl-2.1.24/saslauthd/Makefile.am cyrus-sasl-2.1.24.new/saslauthd/Makefile.am
+--- cyrus-sasl-2.1.24/saslauthd/Makefile.am	2006-04-24 20:02:04.000000000 +0200
++++ cyrus-sasl-2.1.24.new/saslauthd/Makefile.am	2009-11-29 22:39:01.703125000 +0100
+@@ -11,12 +11,12 @@
+ 		    auth_ldap.c auth_ldap.h cache.c cache.h cfile.c cfile.h \
+ 		    krbtf.c krbtf.h utils.c utils.h \
+                     ipc_unix.c ipc_doors.c saslauthd-main.c saslauthd-main.h \
+-		    md5.c saslauthd_md5.h md5global.h 
+-EXTRA_saslauthd_sources = getaddrinfo.c getnameinfo.c
+-saslauthd_DEPENDENCIES = saslauthd-main.o @LTLIBOBJS@
++		    md5.c saslauthd_md5.h md5global.h
++EXTRA_saslauthd_sources =
++saslauthd_DEPENDENCIES = saslauthd-main.o @LIBOBJS@
+ saslauthd_LDADD	= @SASL_KRB_LIB@ \
+ 		  @GSSAPIBASE_LIBS@ @GSSAPI_LIBS@ @LIB_CRYPT@ @LIB_SIA@ \
+-		  @LIB_SOCKET@ @SASL_DB_LIB@ @LIB_PAM@ @LDAP_LIBS@ @LTLIBOBJS@
++		  @LIB_SOCKET@ @SASL_DB_LIB@ @LIB_PAM@ @LDAP_LIBS@ @LIBOBJS@ -L../sasldb/.libs -lsasldb
+ 
+ testsaslauthd_SOURCES = testsaslauthd.c utils.c
+ testsaslauthd_LDADD = @LIB_SOCKET@
+@@ -24,7 +24,7 @@
+ saslcache_SOURCES = saslcache.c
+ 
+ EXTRA_DIST	= saslauthd.8 saslauthd.mdoc config include \
+-		  getnameinfo.c getaddrinfo.c LDAP_SASLAUTHD
++		  LDAP_SASLAUTHD
+ INCLUDES	= -I$(top_srcdir)/include -I$(top_builddir)/include -I$(top_srcdir)/../include
+ DEFS            = @DEFS@ -DSASLAUTHD_CONF_FILE_DEFAULT=\"@sysconfdir@/saslauthd.conf\" -I. -I$(srcdir) -I..
+ 
+diff -uNr cyrus-sasl-2.1.24/saslauthd/configure cyrus-sasl-2.1.24.new/saslauthd/configure
+--- cyrus-sasl-2.1.24/saslauthd/configure	2009-08-13 19:50:49.000000000 +0200
++++ cyrus-sasl-2.1.24.new/saslauthd/configure	2009-11-29 22:40:16.234375000 +0100
+@@ -9457,7 +9457,7 @@
+ 
+ 
+ 
+-  SASL_DB_LIB="$SASL_DB_LIB ../sasldb/.libs/libsasldb.al"
++  SASL_DB_LIB="$SASL_DB_LIB "
+ fi
+ 
+ # Check whether --enable-httpform or --disable-httpform was given.
+diff -uNr cyrus-sasl-2.1.24/saslauthd/configure.in cyrus-sasl-2.1.24.new/saslauthd/configure.in
+--- cyrus-sasl-2.1.24/saslauthd/configure.in	2009-08-13 15:37:30.000000000 +0200
++++ cyrus-sasl-2.1.24.new/saslauthd/configure.in	2009-11-29 22:50:35.671875000 +0100
+@@ -77,7 +77,7 @@
+   AC_DEFINE(AUTH_SASLDB,[],[Include SASLdb Support])
+   SASL_DB_PATH_CHECK()
+   SASL_DB_CHECK()
+-  SASL_DB_LIB="$SASL_DB_LIB ../sasldb/.libs/libsasldb.al"
++  SASL_DB_LIB="$SASL_DB_LIB ../sasldb/.libs/libsasldb.la"
+ fi
+ 
+ AC_ARG_ENABLE(httpform, [  --enable-httpform       enable HTTP form authentication [[no]] ],
+diff -uNr cyrus-sasl-2.1.24/sasldb/Makefile.am cyrus-sasl-2.1.24.new/sasldb/Makefile.am
+--- cyrus-sasl-2.1.24/sasldb/Makefile.am	2009-08-13 15:37:30.000000000 +0200
++++ cyrus-sasl-2.1.24.new/sasldb/Makefile.am	2009-11-29 18:37:01.828125000 +0100
+@@ -56,6 +56,7 @@
+ libsasldb_la_SOURCES = allockey.c sasldb.h
+ EXTRA_libsasldb_la_SOURCES = $(extra_common_sources)
+ libsasldb_la_DEPENDENCIES = $(SASL_DB_BACKEND)
++libsasldb_la_LDFLAGS = -no-undefined
+ libsasldb_la_LIBADD = $(SASL_DB_BACKEND) 
+ 
+ # Prevent make dist stupidity
+diff -uNr cyrus-sasl-2.1.24/utils/Makefile.am cyrus-sasl-2.1.24.new/utils/Makefile.am
+--- cyrus-sasl-2.1.24/utils/Makefile.am	2006-05-18 20:33:47.000000000 +0200
++++ cyrus-sasl-2.1.24.new/utils/Makefile.am	2009-11-29 18:38:11.625000000 +0100
+@@ -87,7 +87,7 @@
+ EXTRA_LTLIBRARIES = libsfsasl2.la
+ libsfsasl2_la_SOURCES = 
+ libsfsasl2_la_LIBADD = sfsasl.lo
+-libsfsasl2_la_LDFLAGS = -version-info 1:0:0 -export-dynamic -rpath $(libdir)
++libsfsasl2_la_LDFLAGS = -version-info 1:0:0 -no-undefined -export-dynamic -rpath $(libdir)
+ 
+ INCLUDES=-I$(top_srcdir)/include -I$(top_builddir)/include @SASL_DB_INC@
+ EXTRA_DIST = saslpasswd2.8 sasldblistusers2.8 pluginviewer.8 sfsasl.h sfsasl.c smtptest.c testsuite.c pluginviewer.c NTMakefile
+diff -uNr cyrus-sasl-2.1.24/utils/Makefile.in cyrus-sasl-2.1.24.new/utils/Makefile.in
+--- cyrus-sasl-2.1.24/utils/Makefile.in	2009-08-13 19:50:26.000000000 +0200
++++ cyrus-sasl-2.1.24.new/utils/Makefile.in	2009-11-29 22:50:35.671875000 +0100
+@@ -244,11 +244,11 @@
+ 
+ @NO_SASL_DB_MANS_TRUE@man_MANS = 
+ 
+-saslpasswd2_LDADD = ../sasldb/libsasldb.la $(all_sasl_libs)
++saslpasswd2_LDADD = -L../sasldb/.libs -lsasldb $(all_sasl_libs)
+ saslpasswd2_SOURCES = saslpasswd.c
+-sasldblistusers2_LDADD = ../sasldb/libsasldb.la $(all_sasl_libs)
++sasldblistusers2_LDADD = -L../sasldb/.libs -lsasldb $(all_sasl_libs)
+ sasldblistusers2_SOURCES = sasldblistusers.c
+-dbconverter_2_LDADD = ../sasldb/libsasldb.la $(all_sasl_libs)
++dbconverter_2_LDADD = -L../sasldb/.libs -lsasldb $(all_sasl_libs)
+ pluginviewer_LDADD = $(all_sasl_libs)
+ pluginviewer_SOURCES = pluginviewer.c
+ 
+@@ -298,7 +298,7 @@
+ 
+ dbconverter_2_SOURCES = dbconverter-2.c
+ dbconverter_2_OBJECTS = dbconverter-2.$(OBJEXT)
+-dbconverter_2_DEPENDENCIES = ../sasldb/libsasldb.la ../lib/libsasl2.la
++dbconverter_2_DEPENDENCIES = -L../sasldb/.libs -lsasldb ../lib/libsasl2.la
+ dbconverter_2_LDFLAGS =
+ am_pluginviewer_OBJECTS = pluginviewer.$(OBJEXT)
+ pluginviewer_OBJECTS = $(am_pluginviewer_OBJECTS)
+@@ -306,12 +306,12 @@
+ pluginviewer_LDFLAGS =
+ am_sasldblistusers2_OBJECTS = sasldblistusers.$(OBJEXT)
+ sasldblistusers2_OBJECTS = $(am_sasldblistusers2_OBJECTS)
+-sasldblistusers2_DEPENDENCIES = ../sasldb/libsasldb.la \
++sasldblistusers2_DEPENDENCIES = -L../sasldb/.libs -lsasldb \
+ 	../lib/libsasl2.la
+ sasldblistusers2_LDFLAGS =
+ am_saslpasswd2_OBJECTS = saslpasswd.$(OBJEXT)
+ saslpasswd2_OBJECTS = $(am_saslpasswd2_OBJECTS)
+-saslpasswd2_DEPENDENCIES = ../sasldb/libsasldb.la ../lib/libsasl2.la
++saslpasswd2_DEPENDENCIES = -L../sasldb/.libs -lsasldb ../lib/libsasl2.la
+ saslpasswd2_LDFLAGS =
+ am_smtptest_OBJECTS =
+ smtptest_OBJECTS = $(am_smtptest_OBJECTS)
