@@ -1,0 +1,42 @@
+diff -ur cyrus-sasl-2.1.24/config/ltconfig cyrus-sasl-2.1.24.new/config/ltconfig
+--- cyrus-sasl-2.1.24/config/ltconfig	2003-06-12 02:32:43.000000000 +0200
++++ cyrus-sasl-2.1.24.new/config/ltconfig	2010-04-02 10:30:43.000000000 +0200
+@@ -1374,7 +1374,7 @@
+ 
+   darwin[15]* | rhapsody*)
+     allow_undefined_flag='-undefined error'
+-    archive_cmds='$CC $(test x$module = xyes && echo -bundle || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $deplibs $linkopts -install_name $rpath/$soname $(test -n "$verstring" -a x$verstring != x0.0 && echo $verstring)'
++    archive_cmds='$CC $(test x$module = xyes && echo  || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $deplibs $linkopts -install_name $rpath/$soname $(test -n "$verstring" -a x$verstring != x0.0 && echo $verstring)'
+     # We need to add '_' to the symbols in $export_symbols first
+     #archive_expsym_cmds="$archive_cmds"' && strip -s $export_symbols $lib'
+     hardcode_direct=yes
+@@ -1385,7 +1385,7 @@
+   # Mac OS X v10.2 uses bash for /bin/sh instead of zsh, and the quoting syntax is incompatible
+   darwin*)
+     allow_undefined_flag='-undefined error'
+-    archive_cmds='$CC $(test x$module = xyes && echo -bundle || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $deplibs $linkopts $(test x$module != xyes && echo -install_name $rpath/$soname $tmp_verstring)'
++    archive_cmds='$CC $(test x$module = xyes && echo  || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $deplibs $linkopts $(test x$module != xyes && echo -install_name $rpath/$soname $tmp_verstring)'
+     # We need to add '_' to the symbols in $export_symbols first
+     #archive_expsym_cmds="$archive_cmds"' && strip -s $export_symbols $lib'
+     hardcode_direct=yes
+diff -ur cyrus-sasl-2.1.24/saslauthd/config/ltconfig cyrus-sasl-2.1.24.new/saslauthd/config/ltconfig
+--- cyrus-sasl-2.1.24/saslauthd/config/ltconfig	2003-10-08 22:24:14.000000000 +0200
++++ cyrus-sasl-2.1.24.new/saslauthd/config/ltconfig	2010-04-02 10:30:58.000000000 +0200
+@@ -1374,7 +1374,7 @@
+ 
+   darwin[15]* | rhapsody*)
+     allow_undefined_flag='-undefined error'
+-    archive_cmds='$CC $(test x$module = xyes && echo -bundle || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $deplibs $linkopts -install_name $rpath/$soname $(test -n "$verstring" -a x$verstring != x0.0 && echo $verstring)'
++    archive_cmds='$CC $(test x$module = xyes && echo  || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $deplibs $linkopts -install_name $rpath/$soname $(test -n "$verstring" -a x$verstring != x0.0 && echo $verstring)'
+     # We need to add '_' to the symbols in $export_symbols first
+     #archive_expsym_cmds="$archive_cmds"' && strip -s $export_symbols $lib'
+     hardcode_direct=yes
+@@ -1385,7 +1385,7 @@
+   # Mac OS X v10.2 uses bash for /bin/sh instead of zsh, and the quoting syntax is incompatible
+   darwin*)
+     allow_undefined_flag='-undefined error'
+-    archive_cmds='$CC $(test x$module = xyes && echo -bundle || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $deplibs $linkopts $(test x$module != xyes && echo -install_name $rpath/$soname $tmp_verstring)'
++    archive_cmds='$CC $(test x$module = xyes && echo  || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $deplibs $linkopts $(test x$module != xyes && echo -install_name $rpath/$soname $tmp_verstring)'
+     # We need to add '_' to the symbols in $export_symbols first
+     #archive_expsym_cmds="$archive_cmds"' && strip -s $export_symbols $lib'
+     hardcode_direct=yes
