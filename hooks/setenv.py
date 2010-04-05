@@ -18,7 +18,7 @@ def getsaslenv(options=None,buildout=None):
         file.close()
         os.chdir(oldpwd)
 
-def getsaslenvb(options=None,buildout=None):
+def reconfigure(options=None,buildout=None):
     if sys.platform.startswith('cygwin'):
         c = os.getcwd()
         os.chdir(options['compile-directory'])
@@ -42,5 +42,6 @@ def getsaslenvb(options=None,buildout=None):
             os.path.join(options['compile-directory'],'configure')
         )
     )
+
 
 # vim:set ts=4 sts=4 et  :

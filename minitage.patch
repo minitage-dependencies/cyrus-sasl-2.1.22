@@ -1,0 +1,78 @@
+diff -ur cyrus-sasl-2.1.24/aclocal.m4 cyrus-sasl-2.1.24.new/aclocal.m4
+--- cyrus-sasl-2.1.24/aclocal.m4	2009-08-13 19:49:38.000000000 +0200
++++ cyrus-sasl-2.1.24.new/aclocal.m4	2010-04-05 18:43:16.000000000 +0200
+@@ -1741,7 +1741,7 @@
+ 	fi
+ 
+ 	saved_LIBS=$LIBS
+-        for dbname in ${with_bdb} db-4.6 db4.6 db46 db-4.5 db4.5 db45 db-4.4 db4.4 db44 db-4.3 db4.3 db43 db-4.2 db4.2 db42 db-4.1 db4.1 db41 db-4.0 db4.0 db-4 db40 db4 db-3.3 db3.3 db33 db-3.2 db3.2 db32 db-3.1 db3.1 db31 db-3 db30 db3 db
++        for dbname in ${with_bdb} db-4.8 db4.8 db-4.7 db4.7 db-4.6 db4.6 db46 db-4.5 db4.5 db45 db-4.4 db4.4 db44 db-4.3 db4.3 db43 db-4.2 db4.2 db42 db-4.1 db4.1 db41 db-4.0 db4.0 db-4 db40 db4 db-3.3 db3.3 db33 db-3.2 db3.2 db32 db-3.1 db3.1 db31 db-3 db30 db3 db
+           do
+ 	    LIBS="$saved_LIBS -l$dbname"
+ 	    AC_TRY_LINK([#include <stdio.h>
+diff -ur cyrus-sasl-2.1.24/cmulocal/berkdb.m4 cyrus-sasl-2.1.24.new/cmulocal/berkdb.m4
+--- cyrus-sasl-2.1.24/cmulocal/berkdb.m4	2009-05-07 17:21:14.000000000 +0200
++++ cyrus-sasl-2.1.24.new/cmulocal/berkdb.m4	2010-04-05 18:43:16.000000000 +0200
+@@ -213,7 +213,7 @@
+ 	fi
+ 
+ 	saved_LIBS=$LIBS
+-        for dbname in ${with_bdb} db-4.6 db4.6 db46 db-4.5 db4.5 db45 db-4.4 db4.4 db44 db-4.3 db4.3 db43 db-4.2 db4.2 db42 db-4.1 db4.1 db41 db-4.0 db4.0 db-4 db40 db4 db-3.3 db3.3 db33 db-3.2 db3.2 db32 db-3.1 db3.1 db31 db-3 db30 db3 db
++        for dbname in ${with_bdb} db-4.8 db4.8 db-4.7 db4.7 db-4.8 db4.8 db-4.7 db4.7 db-4.6 db4.6 db46 db-4.5 db4.5 db45 db-4.4 db4.4 db44 db-4.3 db4.3 db43 db-4.2 db4.2 db42 db-4.1 db4.1 db41 db-4.0 db4.0 db-4 db40 db4 db-3.3 db3.3 db33 db-3.2 db3.2 db32 db-3.1 db3.1 db31 db-3 db30 db3 db
+           do
+ 	    LIBS="$saved_LIBS -l$dbname"
+ 	    AC_TRY_LINK([#include <stdio.h>
+diff -ur cyrus-sasl-2.1.24/configure cyrus-sasl-2.1.24.new/configure
+--- cyrus-sasl-2.1.24/configure	2009-08-13 19:50:03.000000000 +0200
++++ cyrus-sasl-2.1.24.new/configure	2010-04-05 18:43:16.000000000 +0200
+@@ -5148,7 +5148,7 @@
+ 	fi
+ 
+ 	saved_LIBS=$LIBS
+-        for dbname in ${with_bdb} db-4.6 db4.6 db46 db-4.5 db4.5 db45 db-4.4 db4.4 db44 db-4.3 db4.3 db43 db-4.2 db4.2 db42 db-4.1 db4.1 db41 db-4.0 db4.0 db-4 db40 db4 db-3.3 db3.3 db33 db-3.2 db3.2 db32 db-3.1 db3.1 db31 db-3 db30 db3 db
++        for dbname in ${with_bdb} db-4.8 db4.8 db-4.7 db4.7 db-4.6 db4.6 db46 db-4.5 db4.5 db45 db-4.4 db4.4 db44 db-4.3 db4.3 db43 db-4.2 db4.2 db42 db-4.1 db4.1 db41 db-4.0 db4.0 db-4 db40 db4 db-3.3 db3.3 db33 db-3.2 db3.2 db32 db-3.1 db3.1 db31 db-3 db30 db3 db
+           do
+ 	    LIBS="$saved_LIBS -l$dbname"
+ 	    cat >conftest.$ac_ext <<_ACEOF
+@@ -5907,7 +5907,7 @@
+ 	fi
+ 
+ 	saved_LIBS=$LIBS
+-        for dbname in ${with_bdb} db-4.6 db4.6 db46 db-4.5 db4.5 db45 db-4.4 db4.4 db44 db-4.3 db4.3 db43 db-4.2 db4.2 db42 db-4.1 db4.1 db41 db-4.0 db4.0 db-4 db40 db4 db-3.3 db3.3 db33 db-3.2 db3.2 db32 db-3.1 db3.1 db31 db-3 db30 db3 db
++        for dbname in ${with_bdb} db-4.8 db4.8 db-4.7 db4.7 db-4.6 db4.6 db46 db-4.5 db4.5 db45 db-4.4 db4.4 db44 db-4.3 db4.3 db43 db-4.2 db4.2 db42 db-4.1 db4.1 db41 db-4.0 db4.0 db-4 db40 db4 db-3.3 db3.3 db33 db-3.2 db3.2 db32 db-3.1 db3.1 db31 db-3 db30 db3 db
+           do
+ 	    LIBS="$saved_LIBS -l$dbname"
+ 	    cat >conftest.$ac_ext <<_ACEOF
+diff -ur cyrus-sasl-2.1.24/saslauthd/aclocal.m4 cyrus-sasl-2.1.24.new/saslauthd/aclocal.m4
+--- cyrus-sasl-2.1.24/saslauthd/aclocal.m4	2009-08-13 19:50:31.000000000 +0200
++++ cyrus-sasl-2.1.24.new/saslauthd/aclocal.m4	2010-04-05 18:43:16.000000000 +0200
+@@ -2068,7 +2068,7 @@
+ 	fi
+ 
+ 	saved_LIBS=$LIBS
+-        for dbname in ${with_bdb} db-4.6 db4.6 db46 db-4.5 db4.5 db45 db-4.4 db4.4 db44 db-4.3 db4.3 db43 db-4.2 db4.2 db42 db-4.1 db4.1 db41 db-4.0 db4.0 db-4 db40 db4 db-3.3 db3.3 db33 db-3.2 db3.2 db32 db-3.1 db3.1 db31 db-3 db30 db3 db
++        for dbname in ${with_bdb} db-4.8 db4.8 db-4.7 db4.7 db-4.6 db4.6 db46 db-4.5 db4.5 db45 db-4.4 db4.4 db44 db-4.3 db4.3 db43 db-4.2 db4.2 db42 db-4.1 db4.1 db41 db-4.0 db4.0 db-4 db40 db4 db-3.3 db3.3 db33 db-3.2 db3.2 db32 db-3.1 db3.1 db31 db-3 db30 db3 db
+           do
+ 	    LIBS="$saved_LIBS -l$dbname"
+ 	    AC_TRY_LINK([#include <stdio.h>
+diff -ur cyrus-sasl-2.1.24/saslauthd/configure cyrus-sasl-2.1.24.new/saslauthd/configure
+--- cyrus-sasl-2.1.24/saslauthd/configure	2009-08-13 19:50:49.000000000 +0200
++++ cyrus-sasl-2.1.24.new/saslauthd/configure	2010-04-05 18:43:16.000000000 +0200
+@@ -8036,7 +8036,7 @@
+ 	fi
+ 
+ 	saved_LIBS=$LIBS
+-        for dbname in ${with_bdb} db-4.6 db4.6 db46 db-4.5 db4.5 db45 db-4.4 db4.4 db44 db-4.3 db4.3 db43 db-4.2 db4.2 db42 db-4.1 db4.1 db41 db-4.0 db4.0 db-4 db40 db4 db-3.3 db3.3 db33 db-3.2 db3.2 db32 db-3.1 db3.1 db31 db-3 db30 db3 db
++        for dbname in ${with_bdb} db-4.8 db4.8 db-4.7 db4.7 db-4.8 db4.8 db-4.7 db4.7 db-4.6 db4.6 db46 db-4.5 db4.5 db45 db-4.4 db4.4 db44 db-4.3 db4.3 db43 db-4.2 db4.2 db42 db-4.1 db4.1 db41 db-4.0 db4.0 db-4 db40 db4 db-3.3 db3.3 db33 db-3.2 db3.2 db32 db-3.1 db3.1 db31 db-3 db30 db3 db
+           do
+ 	    LIBS="$saved_LIBS -l$dbname"
+ 	    cat >conftest.$ac_ext <<_ACEOF
+@@ -8795,7 +8795,7 @@
+ 	fi
+ 
+ 	saved_LIBS=$LIBS
+-        for dbname in ${with_bdb} db-4.6 db4.6 db46 db-4.5 db4.5 db45 db-4.4 db4.4 db44 db-4.3 db4.3 db43 db-4.2 db4.2 db42 db-4.1 db4.1 db41 db-4.0 db4.0 db-4 db40 db4 db-3.3 db3.3 db33 db-3.2 db3.2 db32 db-3.1 db3.1 db31 db-3 db30 db3 db
++        for dbname in ${with_bdb} db-4.8 db4.8 db-4.7 db4.7 db-4.8 db4.8 db-4.7 db4.7 db-4.6 db4.6 db46 db-4.5 db4.5 db45 db-4.4 db4.4 db44 db-4.3 db4.3 db43 db-4.2 db4.2 db42 db-4.1 db4.1 db41 db-4.0 db4.0 db-4 db40 db4 db-3.3 db3.3 db33 db-3.2 db3.2 db32 db-3.1 db3.1 db31 db-3 db30 db3 db
+           do
+ 	    LIBS="$saved_LIBS -l$dbname"
+ 	    cat >conftest.$ac_ext <<_ACEOF
