@@ -1,0 +1,54 @@
+diff -ur cyrus-sasl-2.1.24.new/config/ltconfig cyrus-sasl-2.1.24.dynamiclib/config/ltconfig
+--- cyrus-sasl-2.1.24.new/config/ltconfig	2010-04-02 10:30:43.000000000 +0200
++++ cyrus-sasl-2.1.24.dynamiclib/config/ltconfig	2010-04-02 10:37:14.000000000 +0200
+@@ -1374,7 +1374,7 @@
+ 
+   darwin[15]* | rhapsody*)
+     allow_undefined_flag='-undefined error'
+-    archive_cmds='$CC $(test x$module = xyes && echo  || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $deplibs $linkopts -install_name $rpath/$soname $(test -n "$verstring" -a x$verstring != x0.0 && echo $verstring)'
++    archive_cmds='$CC $(test x$module = xyes && echo  || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $deplibs $linkopts -dynamiclib -install_name $rpath/$soname $(test -n "$verstring" -a x$verstring != x0.0 && echo $verstring)'
+     # We need to add '_' to the symbols in $export_symbols first
+     #archive_expsym_cmds="$archive_cmds"' && strip -s $export_symbols $lib'
+     hardcode_direct=yes
+@@ -1385,7 +1385,7 @@
+   # Mac OS X v10.2 uses bash for /bin/sh instead of zsh, and the quoting syntax is incompatible
+   darwin*)
+     allow_undefined_flag='-undefined error'
+-    archive_cmds='$CC $(test x$module = xyes && echo  || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $deplibs $linkopts $(test x$module != xyes && echo -install_name $rpath/$soname $tmp_verstring)'
++    archive_cmds='$CC $(test x$module = xyes && echo  || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $deplibs $linkopts $(test x$module != xyes && echo -dynamiclib -install_name $rpath/$soname $tmp_verstring)'
+     # We need to add '_' to the symbols in $export_symbols first
+     #archive_expsym_cmds="$archive_cmds"' && strip -s $export_symbols $lib'
+     hardcode_direct=yes
+diff -ur cyrus-sasl-2.1.24.new/dlcompat-20010505/Makefile cyrus-sasl-2.1.24.dynamiclib/dlcompat-20010505/Makefile
+--- cyrus-sasl-2.1.24.new/dlcompat-20010505/Makefile	2010-04-02 10:30:06.000000000 +0200
++++ cyrus-sasl-2.1.24.dynamiclib/dlcompat-20010505/Makefile	2010-04-02 10:37:14.000000000 +0200
+@@ -55,7 +55,7 @@
+ 	$(RANLIB) libdl.a
+ 
+ libdl.dylib: $(OBJS)
+-	$(CC) -dynamiclib -undefined error -o libdl.dylib $(OBJS) -install_name $(prefix)/lib/libdl.dylib
++	$(CC) -dynamiclib -undefined error -o libdl.dylib $(OBJS) -dynamiclib -install_name $(prefix)/lib/libdl.dylib
+ 
+ clean:
+ 	rm -f $(OBJS) libdl.*
+diff -ur cyrus-sasl-2.1.24.new/saslauthd/config/ltconfig cyrus-sasl-2.1.24.dynamiclib/saslauthd/config/ltconfig
+--- cyrus-sasl-2.1.24.new/saslauthd/config/ltconfig	2010-04-02 10:30:58.000000000 +0200
++++ cyrus-sasl-2.1.24.dynamiclib/saslauthd/config/ltconfig	2010-04-02 10:37:14.000000000 +0200
+@@ -1374,7 +1374,7 @@
+ 
+   darwin[15]* | rhapsody*)
+     allow_undefined_flag='-undefined error'
+-    archive_cmds='$CC $(test x$module = xyes && echo  || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $deplibs $linkopts -install_name $rpath/$soname $(test -n "$verstring" -a x$verstring != x0.0 && echo $verstring)'
++    archive_cmds='$CC $(test x$module = xyes && echo  || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $deplibs $linkopts -dynamiclib -install_name $rpath/$soname $(test -n "$verstring" -a x$verstring != x0.0 && echo $verstring)'
+     # We need to add '_' to the symbols in $export_symbols first
+     #archive_expsym_cmds="$archive_cmds"' && strip -s $export_symbols $lib'
+     hardcode_direct=yes
+@@ -1385,7 +1385,7 @@
+   # Mac OS X v10.2 uses bash for /bin/sh instead of zsh, and the quoting syntax is incompatible
+   darwin*)
+     allow_undefined_flag='-undefined error'
+-    archive_cmds='$CC $(test x$module = xyes && echo  || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $deplibs $linkopts $(test x$module != xyes && echo -install_name $rpath/$soname $tmp_verstring)'
++    archive_cmds='$CC $(test x$module = xyes && echo  || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $deplibs $linkopts $(test x$module != xyes && echo -dynamiclib -install_name $rpath/$soname $tmp_verstring)'
+     # We need to add '_' to the symbols in $export_symbols first
+     #archive_expsym_cmds="$archive_cmds"' && strip -s $export_symbols $lib'
+     hardcode_direct=yes
